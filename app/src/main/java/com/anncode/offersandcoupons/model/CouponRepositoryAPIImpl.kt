@@ -1,9 +1,7 @@
 package com.anncode.offersandcoupons.model
 
 import android.util.Log
-import com.anncode.offersandcoupons.R
 import com.anncode.offersandcoupons.presenter.CouponPresenter
-import com.anncode.offersandcoupons.view.RecyclerCouponsAdapter
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import retrofit2.Call
