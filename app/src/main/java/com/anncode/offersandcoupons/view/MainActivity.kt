@@ -1,42 +1,42 @@
 package com.anncode.offersandcoupons.view
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.anncode.offersandcoupons.R
+import com.anncode.offersandcoupons.databinding.ActivityMainBinding
 import com.anncode.offersandcoupons.model.Coupon
-import com.anncode.offersandcoupons.presenter.CouponPresenter
-import com.anncode.offersandcoupons.presenter.CouponPresenterImpl
-import kotlin.Exception
+import com.anncode.offersandcoupons.viewmodel.CouponViewModel
 
-class MainActivity : AppCompatActivity() , CouponView{
+class MainActivity : AppCompatActivity(){
 
-    private var couponPresenter : CouponPresenter? = null
-    private var rvCoupons: RecyclerView? = null
+    private var couponViewModel:CouponViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setupBindings(savedInstanceState)
         supportActionBar?.hide()
-
-        couponPresenter = CouponPresenterImpl(this)
-
-        rvCoupons = findViewById(R.id.rvCoupons)
-        rvCoupons?.layoutManager = LinearLayoutManager(this)
-
-        getCoupons()
     }
 
-    override fun getCoupons() {
-        couponPresenter?.getCoupons()
+    fun setupBindings(savedInstanceState: Bundle?){
+        var activityMainBinding: ActivityMainBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_main)
+        couponViewModel = ViewModelProviders.of(this).get(CouponViewModel::class.java)
+        activityMainBinding.model = couponViewModel
+        setUpListUpdate()
     }
 
-    override fun showCoupons(coupons: ArrayList<Coupon>?) {
-        try{
-            rvCoupons!!.adapter = RecyclerCouponsAdapter(coupons, R.layout.card_coupon)
-        }catch (e:Exception){
-            e.printStackTrace()
-        }
+    private fun setUpListUpdate() {
+        couponViewModel?.callCoupons()
+        couponViewModel?.getcoupons()?.observe(this, Observer {
+            coupons:List<Coupon> -> couponViewModel?.setCouponsInRecycler(coupons)
+        })
+
     }
+
+
 }
