@@ -2,11 +2,11 @@ package com.anncode.offersandcoupons.view
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.anncode.offersandcoupons.R
 import com.anncode.offersandcoupons.model.Coupon
 import com.squareup.picasso.Picasso
